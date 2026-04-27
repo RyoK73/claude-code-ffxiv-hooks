@@ -22,7 +22,7 @@ SOFTWARE.
 
 ---
 
-Note: The FINAL FANTASY XIV sound effects included in the sounds/ directory
-are NOT covered by the MIT License above. They are the property of
+Note: The FINAL FANTASY XIV sound effects included in the sounds/ffxiv_sounds/
+directory are NOT covered by the MIT License above. They are the property of
 SQUARE ENIX CO., LTD. and are subject to their terms of use.
 See README.md for details.
