@@ -1,0 +1,36 @@
+{
+  "player": "auto",
+  "volume": 80,
+  "hooks": [
+    {
+      "name": "Stop",
+      "soundPath": "ffxiv_sounds/FFXIV_Quest_Complete.mp3",
+      "isEnable": false
+    },
+    {
+      "name": "SubagentStop",
+      "soundPath": "ffxiv_sounds/FFXIV_Guildleve_Complete.mp3",
+      "isEnable": false
+    },
+    {
+      "name": "Notification",
+      "soundPath": "ffxiv_sounds/FFXIV_Incoming_Tell_1.mp3",
+      "isEnable": true
+    },
+    {
+      "name": "PostToolUse_Bash_Success",
+      "soundPath": "ffxiv_sounds/FFXIV_Confirm.mp3",
+      "isEnable": false
+    },
+    {
+      "name": "PostToolUse_Bash_Failure",
+      "soundPath": "ffxiv_sounds/FFXIV_Error.mp3",
+      "isEnable": false
+    },
+    {
+      "name": "PostToolUse_Edit",
+      "soundPath": "ffxiv_sounds/FFXIV_Obtain_Item.mp3",
+      "isEnable": false
+    }
+  ]
+}
