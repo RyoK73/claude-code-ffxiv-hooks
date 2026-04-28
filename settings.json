@@ -3,21 +3,21 @@
     "Stop": [
       {
         "hooks": [
-          { "type": "command", "command": "__REPO_DIR__/scripts/play.sh FFXIV_Quest_Complete.mp3" }
+          { "type": "command", "command": "__REPO_DIR__/scripts/play.sh ffxiv_sounds/FFXIV_Quest_Complete.mp3" }
         ]
       }
     ],
     "SubagentStop": [
       {
         "hooks": [
-          { "type": "command", "command": "__REPO_DIR__/scripts/play.sh FFXIV_Guildleve_Complete.mp3" }
+          { "type": "command", "command": "__REPO_DIR__/scripts/play.sh ffxiv_sounds/FFXIV_Guildleve_Complete.mp3" }
         ]
       }
     ],
     "Notification": [
       {
         "hooks": [
-          { "type": "command", "command": "__REPO_DIR__/scripts/play.sh FFXIV_Incoming_Tell_1.mp3" }
+          { "type": "command", "command": "__REPO_DIR__/scripts/play.sh ffxiv_sounds/FFXIV_Incoming_Tell_1.mp3" }
         ]
       }
     ],
@@ -31,7 +31,7 @@
       {
         "matcher": "Edit|Write|MultiEdit",
         "hooks": [
-          { "type": "command", "command": "__REPO_DIR__/scripts/play.sh FFXIV_Obtain_Item.mp3" }
+          { "type": "command", "command": "__REPO_DIR__/scripts/play.sh ffxiv_sounds/FFXIV_Obtain_Item.mp3" }
         ]
       }
     ]
