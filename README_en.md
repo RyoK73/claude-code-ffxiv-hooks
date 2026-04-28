@@ -1,5 +1,7 @@
 # claude-code-ffxiv-hooks
 
+English | [日本語](./README.md)
+
 Plays FINAL FANTASY XIV sound effects in response to Claude Code hook events.
 
 ## Overview
@@ -15,7 +17,7 @@ FFXIV SEs play when Claude Code completes various operations.
 | `PostToolUse` (Bash failure) | Error | Shell command exits non-zero |
 | `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item | File edited or created |
 
-By default, **only Notification is enabled**. Toggle hooks in `hooks-config.json`.
+By default, **Stop and Notification are enabled**. Toggle hooks in `hooks-config.json`.
 
 ## Requirements
 
@@ -118,7 +120,7 @@ scripts/
 
 ### Scripts and configuration files
 
-`scripts/` and `hooks-config.json` are released under the [MIT License](../LICENSE).
+`scripts/` and `hooks-config.json` are released under the [MIT License](./LICENSE).
 
 ### FFXIV sound effects
 

@@ -1,5 +1,7 @@
 # claude-code-ffxiv-hooks
 
+[English](./README_en.md) | 日本語
+
 Claude Code のhookイベントに応じて、FINAL FANTASY XIV のサウンドエフェクトを再生するセットアップリポジトリです。
 
 ## 概要
@@ -15,7 +17,7 @@ Claude Code が各種操作を完了した際に、FFXIVのSEが鳴ります。
 | `PostToolUse` (Bash 失敗) | Error | Bash ツールの実行が**終了コード 非0** でエラー終了したとき |
 | `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item | ファイルの**編集・作成ツール**が完了したとき。1ターン中に複数ファイルを編集すると複数回発火する |
 
-デフォルトでは **Notification のみ有効**です。`hooks-config.json` で各hookの有効/無効を切り替えられます。
+デフォルトでは **Stop・Notification が有効**です。`hooks-config.json` で各hookの有効/無効を切り替えられます。
 
 ## 必要なもの
 
