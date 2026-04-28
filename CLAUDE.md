@@ -1,0 +1,2 @@
+- README.mdを更新するときは、README_en.mdも更新する
+- hooksを説明するときは"https://code.claude.com/docs/ja/hooks"を参照すること

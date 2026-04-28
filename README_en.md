@@ -1,5 +1,7 @@
 # claude-code-ffxiv-hooks
 
+English | [日本語](./README.md)
+
 Plays FINAL FANTASY XIV sound effects in response to Claude Code hook events.
 
 ## Overview
@@ -8,14 +10,14 @@ FFXIV SEs play when Claude Code completes various operations.
 
 | Hook | Default SE | Trigger |
 |------|-----------|---------|
-| `Stop` | Quest Complete | Claude finishes a task |
+| `Stop` | Quest Complete | Claude completes a turn's response and **waits for user input**. Fires every turn. |
 | `SubagentStop` | Guildleve Complete | A subagent finishes |
-| `Notification` | Incoming Tell 1 | Awaiting input or notification |
+| `Notification` | Incoming Tell 1 | When Claude sends a notification. **Suppressed if the terminal has focus** — only fires when focus is away (e.g., you've stepped away from your desk). |
 | `PostToolUse` (Bash success) | Confirm | Shell command exits with 0 |
 | `PostToolUse` (Bash failure) | Error | Shell command exits non-zero |
-| `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item | File edited or created |
+| `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item | When a **file edit/create tool** completes. Fires once per file — multiple edits in one turn trigger it multiple times. |
 
-By default, **only Notification is enabled**. Toggle hooks in `hooks-config.json`.
+By default, **Stop and Notification are enabled**. Toggle hooks in `hooks-config.json`.
 
 ## Requirements
 
@@ -81,6 +83,8 @@ Edit `hooks-config.json` in the repository root to change SE settings **without 
 | `hooks[].soundPath` | Path relative to `sounds/` |
 | `hooks[].isEnable` | `true` to enable, `false` to disable |
 
+> **Note:** `hooks-config.json` is for **dynamically changing the sound and enabled state of existing hooks**. To add a new hook type, you must also register it in `settings.json`. Adding an entry only to `hooks-config.json` will not fire the hook. To add a new hook, re-run `install.sh` or edit `settings.json` directly.
+
 ## Adding Custom Sounds
 
 Place any MP3 file in `sounds/third_party/` and set `soundPath` to `"third_party/filename.mp3"` in `hooks-config.json`. No script changes needed.
@@ -118,7 +122,7 @@ scripts/
 
 ### Scripts and configuration files
 
-`scripts/` and `hooks-config.json` are released under the [MIT License](../LICENSE).
+`scripts/` and `hooks-config.json` are released under the [MIT License](./LICENSE).
 
 ### FFXIV sound effects
 
