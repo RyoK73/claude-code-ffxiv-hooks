@@ -83,6 +83,8 @@ Edit `hooks-config.json` in the repository root to change SE settings **without 
 | `hooks[].soundPath` | Path relative to `sounds/` |
 | `hooks[].isEnable` | `true` to enable, `false` to disable |
 
+> **Note:** `hooks-config.json` is for **dynamically changing the sound and enabled state of existing hooks**. To add a new hook type, you must also register it in `settings.json`. Adding an entry only to `hooks-config.json` will not fire the hook. To add a new hook, re-run `install.sh` or edit `settings.json` directly.
+
 ## Adding Custom Sounds
 
 Place any MP3 file in `sounds/third_party/` and set `soundPath` to `"third_party/filename.mp3"` in `hooks-config.json`. No script changes needed.

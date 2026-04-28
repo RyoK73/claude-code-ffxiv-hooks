@@ -83,6 +83,8 @@ bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --global
 | `hooks[].soundPath` | `sounds/` からの相対パス |
 | `hooks[].isEnable` | `true` で有効、`false` で無効 |
 
+> **注意:** `hooks-config.json` は **既存hookの音・有効/無効を動的に変える**ためのファイルです。新しい種類のhookを追加するには `settings.json` への登録も必要です。`hooks-config.json` だけに追記しても、対応するhookは発火しません。新規hookを追加する場合は `install.sh` を再実行するか、`settings.json` を直接編集してください。
+
 ## サードパーティSEの追加
 
 `sounds/third_party/` に任意のMP3ファイルを配置し、`hooks-config.json` の `soundPath` に `"third_party/ファイル名.mp3"` と指定するだけで使用できます。
