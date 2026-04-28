@@ -6,7 +6,7 @@ Claude Code のhookイベントに応じて、FINAL FANTASY XIV のサウンド�
 
 Claude Code が各種操作を完了した際に、FFXIVのSEが鳴ります。
 
-| Hook | 再生されるSE | タイミング |
+| Hook | デフォルトSE | タイミング |
 |------|------------|----------|
 | `Stop` | Quest Complete | Claudeがタスクを完了したとき |
 | `SubagentStop` | Guildleve Complete | サブエージェントが完了したとき |
@@ -15,12 +15,18 @@ Claude Code が各種操作を完了した際に、FFXIVのSEが鳴ります。
 | `PostToolUse` (Bash 失敗) | Error | シェルコマンドがエラー終了したとき |
 | `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item | ファイルが編集・作成されたとき |
 
+デフォルトでは **Notification のみ有効**です。`hooks-config.json` で各hookの有効/無効を切り替えられます。
+
 ## 必要なもの
 
 - [Claude Code](https://claude.ai/code)
-- `paplay`（PulseAudio / PipeWire）
 - `jq`
 - `bash`
+- 以下いずれかのオーディオプレーヤー（優先順）:
+  - `paplay`（推奨）: PipeWire / PulseAudio 環境に同梱
+  - `mpv`: `sudo pacman -S mpv` / `sudo apt install mpv`
+  - `ffplay`: `sudo pacman -S ffmpeg` / `sudo apt install ffmpeg`
+  - `aplay`: ALSA 環境に同梱（音量調整非対応）
 
 ## インストール
 
@@ -39,7 +45,7 @@ hookを適用したいプロジェクトのルートで実行します。
 bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --local
 ```
 
-`.claude/settings.json` にhookが追記されます。
+`.claude/settings.json` にhookが書き込まれます。既存の設定がある場合は自動でバックアップされます。
 
 ### ユーザーレベルにインストール（全プロジェクト共通）
 
@@ -49,22 +55,70 @@ bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --local
 bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --global
 ```
 
+## 設定: hooks-config.json
+
+リポジトリルートの `hooks-config.json` を編集することで、**install.sh の再実行なし**にSEの設定を変更できます。
+
+```json
+{
+  "player": "auto",
+  "volume": 80,
+  "hooks": [
+    {
+      "name": "Notification",
+      "soundPath": "ffxiv_sounds/FFXIV_Incoming_Tell_1.mp3",
+      "isEnable": true
+    }
+  ]
+}
+```
+
+| フィールド | 説明 |
+|---|---|
+| `player` | `"auto"` / `"paplay"` / `"mpv"` / `"ffplay"` / `"aplay"` |
+| `volume` | 音量（0〜100）。`aplay` は非対応 |
+| `hooks[].name` | hookの識別子（変更不可） |
+| `hooks[].soundPath` | `sounds/` からの相対パス |
+| `hooks[].isEnable` | `true` で有効、`false` で無効 |
+
+## サードパーティSEの追加
+
+`sounds/third_party/` に任意のMP3ファイルを配置し、`hooks-config.json` の `soundPath` に `"third_party/ファイル名.mp3"` と指定するだけで使用できます。
+
+## バックアップと復元
+
+`install.sh` は実行のたびに既存の `settings.json` をバックアップします（最大5件保持）。
+
+元の状態に戻すには `restore.sh` を使用します。
+
+```bash
+# プロジェクトレベルを復元
+bash /path/to/claude-code-ffxiv-hooks/scripts/restore.sh --local
+
+# ユーザーレベルを復元
+bash /path/to/claude-code-ffxiv-hooks/scripts/restore.sh --global
+```
+
+実行するとバックアップ一覧が表示されます。番号を選択してEnterを押すと復元されます（選択なしで最新を復元）。
+
 ## ディレクトリ構成
 
 ```
 sounds/
 ├── ffxiv_sounds/   # FINAL FANTASY XIV のサウンドエフェクト
 └── third_party/    # サードパーティ製サウンド（各自で追加）
+scripts/
+├── install.sh      # インストールスクリプト
+├── restore.sh      # バックアップ復元スクリプト
+├── play.sh         # SE再生スクリプト
+└── play_bash_result.sh  # Bash結果に応じたSE再生
 ```
-
-サードパーティ製サウンドを追加する場合は `sounds/third_party/` に配置し、
-`settings.json` のhookコマンドで `third_party/<ファイル名>` を指定してください。
 
 ## ライセンス
 
 ### スクリプト・設定ファイル
 
-`scripts/` および `settings.json` は [MIT License](./LICENSE) のもとで公開しています。
+`scripts/` および `hooks-config.json` は [MIT License](./LICENSE) のもとで公開しています。
 
 ### FFXIV サウンドエフェクトについて
 
