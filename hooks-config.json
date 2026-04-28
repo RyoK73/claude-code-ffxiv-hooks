@@ -4,8 +4,8 @@
   "hooks": [
     {
       "name": "Stop",
-      "soundPath": "ffxiv_sounds/FFXIV_Quest_Complete.mp3",
-      "isEnable": false
+      "soundPath": "ffxiv_sounds/FFXIV_Notification.mp3",
+      "isEnable": true
     },
     {
       "name": "SubagentStop",
@@ -14,7 +14,7 @@
     },
     {
       "name": "Notification",
-      "soundPath": "ffxiv_sounds/FFXIV_Incoming_Tell_1.mp3",
+      "soundPath": "ffxiv_sounds/FFXIV_Limit_Break_Charged.mp3",
       "isEnable": true
     },
     {
