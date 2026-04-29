@@ -13,11 +13,12 @@ FFXIV SEs play when Claude Code completes various operations.
 | `Stop` | Quest Complete | Claude completes a turn's response and **waits for user input**. Fires every turn. |
 | `SubagentStop` | Guildleve Complete | A subagent finishes |
 | `Notification` | Incoming Tell 1 | When Claude sends a notification. **Suppressed if the terminal has focus** — only fires when focus is away (e.g., you've stepped away from your desk). |
+| `PermissionRequest` | Quest Complete | When Claude **requests permission** to perform a tool call or action. |
 | `PostToolUse` (Bash success) | Confirm | Shell command exits with 0 |
 | `PostToolUse` (Bash failure) | Error | Shell command exits non-zero |
 | `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item | When a **file edit/create tool** completes. Fires once per file — multiple edits in one turn trigger it multiple times. |
 
-By default, **Stop and Notification are enabled**. Toggle hooks in `hooks-config.json`.
+By default, **Stop, Notification, and PermissionRequest are enabled**. Toggle hooks in `hooks-config.json`.
 
 ## Requirements
 
@@ -68,6 +69,7 @@ Edit `hooks-config.json` in the repository root to change SE settings **without 
   "hooks": [
     {
       "name": "Notification",
+      "hookEvent": "Notification",
       "soundPath": "ffxiv_sounds/FFXIV_Incoming_Tell_1.mp3",
       "isEnable": true
     }
@@ -79,11 +81,41 @@ Edit `hooks-config.json` in the repository root to change SE settings **without 
 |---|---|
 | `player` | `"auto"` / `"paplay"` / `"mpv"` / `"ffplay"` / `"aplay"` |
 | `volume` | Volume level (0–100). Not supported by `aplay` |
-| `hooks[].name` | Hook identifier (do not change) |
+| `hooks[].name` | Hook identifier |
+| `hooks[].hookEvent` | Claude Code hook event name this entry maps to |
 | `hooks[].soundPath` | Path relative to `sounds/` |
 | `hooks[].isEnable` | `true` to enable, `false` to disable |
+| `hooks[].matcher` | (PostToolUse only) Tool name matcher pattern |
+| `hooks[].script` | (PostToolUse only) Custom script filename. Defaults to `play.sh` if omitted |
 
-> **Note:** `hooks-config.json` is for **dynamically changing the sound and enabled state of existing hooks**. To add a new hook type, you must also register it in `settings.json`. Adding an entry only to `hooks-config.json` will not fire the hook. To add a new hook, re-run `install.sh` or edit `settings.json` directly.
+### Adding new hooks
+
+Add an entry to `hooks-config.json` and re-run `install.sh` — the new hook is automatically registered in `settings.json`.
+
+**Adding a simple hook** (like `Stop` or `Notification`):
+
+```json
+{
+  "name": "PreToolUse",
+  "hookEvent": "PreToolUse",
+  "soundPath": "third_party/my_sound.mp3",
+  "isEnable": true
+}
+```
+
+**Adding a new PostToolUse matcher**:
+
+```json
+{
+  "name": "PostToolUse_Read",
+  "hookEvent": "PostToolUse",
+  "matcher": "Read",
+  "soundPath": "ffxiv_sounds/FFXIV_Confirm.mp3",
+  "isEnable": true
+}
+```
+
+After adding entries, re-run `install.sh` to apply.
 
 ## Adding Custom Sounds
 

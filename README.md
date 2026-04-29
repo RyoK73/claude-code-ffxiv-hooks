@@ -13,11 +13,12 @@ Claude Code が各種操作を完了した際に、FFXIVのSEが鳴ります。
 | `Stop` | Quest Complete | Claudeが1ターンの応答を完了し、**ユーザーの入力待ち**になったとき。毎ターン必ず発火する |
 | `SubagentStop` | Guildleve Complete | `Agent` ツールで起動した**サブエージェントが完了**したとき |
 | `Notification` | Incoming Tell 1 | Claude が通知を送信するとき。ただし**ターミナルにフォーカスがある場合は抑制**される。席を外しているときなど、フォーカスが外れている状態でのみ実際に発火する |
+| `PermissionRequest` | Quest Complete | Claudeがツール実行などの**許可をリクエスト**するとき |
 | `PostToolUse` (Bash 成功) | Confirm | Bash ツールの実行が**終了コード 0** で正常終了したとき |
 | `PostToolUse` (Bash 失敗) | Error | Bash ツールの実行が**終了コード 非0** でエラー終了したとき |
 | `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item | ファイルの**編集・作成ツール**が完了したとき。1ターン中に複数ファイルを編集すると複数回発火する |
 
-デフォルトでは **Stop・Notification が有効**です。`hooks-config.json` で各hookの有効/無効を切り替えられます。
+デフォルトでは **Stop・Notification・PermissionRequest が有効**です。`hooks-config.json` で各hookの有効/無効を切り替えられます。
 
 ## 必要なもの
 
@@ -68,6 +69,7 @@ bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --global
   "hooks": [
     {
       "name": "Notification",
+      "hookEvent": "Notification",
       "soundPath": "ffxiv_sounds/FFXIV_Incoming_Tell_1.mp3",
       "isEnable": true
     }
@@ -79,11 +81,41 @@ bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --global
 |---|---|
 | `player` | `"auto"` / `"paplay"` / `"mpv"` / `"ffplay"` / `"aplay"` |
 | `volume` | 音量（0〜100）。`aplay` は非対応 |
-| `hooks[].name` | hookの識別子（変更不可） |
+| `hooks[].name` | hookの識別子 |
+| `hooks[].hookEvent` | 対応するClaude Code hookイベント名 |
 | `hooks[].soundPath` | `sounds/` からの相対パス |
 | `hooks[].isEnable` | `true` で有効、`false` で無効 |
+| `hooks[].matcher` | （PostToolUse専用）ツール名のマッチャーパターン |
+| `hooks[].script` | （PostToolUse専用）カスタムスクリプト名。省略時は `play.sh` を使用 |
 
-> **注意:** `hooks-config.json` は **既存hookの音・有効/無効を動的に変える**ためのファイルです。新しい種類のhookを追加するには `settings.json` への登録も必要です。`hooks-config.json` だけに追記しても、対応するhookは発火しません。新規hookを追加する場合は `install.sh` を再実行するか、`settings.json` を直接編集してください。
+### hookの追加
+
+`hooks-config.json` にエントリを追加して `install.sh` を再実行するだけで、新しいhookを `settings.json` に自動登録できます。
+
+**シンプルなhookを追加する場合**（`Stop` や `Notification` と同様のイベント）:
+
+```json
+{
+  "name": "PreToolUse",
+  "hookEvent": "PreToolUse",
+  "soundPath": "third_party/my_sound.mp3",
+  "isEnable": true
+}
+```
+
+**PostToolUse に新しいマッチャーを追加する場合**:
+
+```json
+{
+  "name": "PostToolUse_Read",
+  "hookEvent": "PostToolUse",
+  "matcher": "Read",
+  "soundPath": "ffxiv_sounds/FFXIV_Confirm.mp3",
+  "isEnable": true
+}
+```
+
+エントリを追加後、`install.sh` を再実行してください。
 
 ## サードパーティSEの追加
 
