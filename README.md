@@ -83,10 +83,31 @@ bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --global
 | `volume` | 音量（0〜100）。`aplay` は非対応 |
 | `hooks[].name` | hookの識別子 |
 | `hooks[].hookEvent` | 対応するClaude Code hookイベント名 |
-| `hooks[].soundPath` | `sounds/` からの相対パス |
+| `hooks[].soundPath` | `sounds/` からの相対パス（単一音源） |
+| `hooks[].soundPaths` | 複数音源を順番に再生するパスの配列。`soundPath` より優先される |
 | `hooks[].isEnable` | `true` で有効、`false` で無効 |
 | `hooks[].matcher` | （PostToolUse専用）ツール名のマッチャーパターン |
 | `hooks[].script` | （PostToolUse専用）カスタムスクリプト名。省略時は `play.sh` を使用 |
+
+### 複数のSEを順番に再生する
+
+`soundPaths`（配列）を使うと、1つのhookで複数のSEを順番に再生できます。
+
+```json
+{
+  "name": "Stop",
+  "hookEvent": "Stop",
+  "soundPaths": [
+    "ffxiv_sounds/FFXIV_Fanfare.mp3",
+    "ffxiv_sounds/FFXIV_Notification.mp3"
+  ],
+  "isEnable": true
+}
+```
+
+- 前の音源が再生し終わってから次が再生されます（順次再生）
+- hookコマンド自体はすぐに返るため、Claude Code の動作をブロックしません
+- `soundPath`（文字列）と `soundPaths`（配列）が両方ある場合は `soundPaths` が優先されます
 
 ### hookの追加
 
@@ -167,3 +188,6 @@ scripts/
 ### サードパーティ製サウンドについて
 
 `sounds/third_party/` に配置するサウンドは各自の責任のもとご利用ください。利用するサウンドのライセンスを必ずご確認ください。
+
+## Credits
+- Ticking Clock Sound Effect – 1 - MP3 Edition by [WingsoarStudio](https://pixabay.com/users/wingsoarstudio-47048810/) via [pixabay](https://pixabay.com)
