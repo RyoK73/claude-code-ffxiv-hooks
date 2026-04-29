@@ -10,10 +10,10 @@ FFXIV SEs play when Claude Code completes various operations.
 
 | Hook | Default SE | Trigger |
 |------|-----------|---------|
-| `Stop` | Quest Complete | Claude completes a turn's response and **waits for user input**. Fires every turn. |
+| `Stop` | Notification | Claude completes a turn's response and **waits for user input**. Fires every turn. |
 | `SubagentStop` | Guildleve Complete | A subagent finishes |
-| `Notification` | Incoming Tell 1 | When Claude sends a notification. **Suppressed if the terminal has focus** — only fires when focus is away (e.g., you've stepped away from your desk). |
-| `PermissionRequest` | Quest Complete | When Claude **requests permission** to perform a tool call or action. |
+| `Notification` | Linkshell Transmission | When Claude sends a notification. **Suppressed if the terminal has focus** — only fires when focus is away (e.g., you've stepped away from your desk). |
+| `PermissionRequest` | Feature Unlocked | When Claude **requests permission** to perform a tool call or action. |
 | `PostToolUse` (Bash success) | Confirm | Shell command exits with 0 |
 | `PostToolUse` (Bash failure) | Error | Shell command exits non-zero |
 | `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item | When a **file edit/create tool** completes. Fires once per file — multiple edits in one turn trigger it multiple times. |
@@ -83,10 +83,31 @@ Edit `hooks-config.json` in the repository root to change SE settings **without 
 | `volume` | Volume level (0–100). Not supported by `aplay` |
 | `hooks[].name` | Hook identifier |
 | `hooks[].hookEvent` | Claude Code hook event name this entry maps to |
-| `hooks[].soundPath` | Path relative to `sounds/` |
+| `hooks[].soundPath` | Path relative to `sounds/` (single sound) |
+| `hooks[].soundPaths` | Array of paths to play in sequence. Takes precedence over `soundPath` |
 | `hooks[].isEnable` | `true` to enable, `false` to disable |
 | `hooks[].matcher` | (PostToolUse only) Tool name matcher pattern |
 | `hooks[].script` | (PostToolUse only) Custom script filename. Defaults to `play.sh` if omitted |
+
+### Playing multiple sounds in sequence
+
+Use `soundPaths` (array) to play multiple SEs in order for a single hook event.
+
+```json
+{
+  "name": "Stop",
+  "hookEvent": "Stop",
+  "soundPaths": [
+    "ffxiv_sounds/FFXIV_Fanfare.mp3",
+    "ffxiv_sounds/FFXIV_Notification.mp3"
+  ],
+  "isEnable": true
+}
+```
+
+- Each sound plays to completion before the next starts (sequential playback)
+- The hook command returns immediately — Claude Code is not blocked
+- If both `soundPath` and `soundPaths` are present, `soundPaths` takes precedence
 
 ### Adding new hooks
 
@@ -167,3 +188,6 @@ Please review the [FINAL FANTASY XIV Materials Usage License](http://support.jp.
 ### Third-party sounds
 
 Any sounds placed in `sounds/third_party/` are used at your own responsibility. Always verify the license of any sound you add.
+
+## Credits
+- [Ticking Clock Sound Effect – 1 - MP3 Edition](https://pixabay.com/sound-effects/film-special-effects-ticking-clock-sound-effect-1-mp3-edition-264451/) by [WingsoarStudio](https://pixabay.com/users/wingsoarstudio-47048810/) via [pixabay](https://pixabay.com)
