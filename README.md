@@ -54,10 +54,14 @@ cp /path/to/extracted/*.mp3 sounds/ffxiv_sounds/
 
 ### プロジェクトレベルにインストール（特定プロジェクトのみ）
 
-hookを適用したいプロジェクトのルートで実行します。
+hookを適用したいプロジェクトのルートで実行するか、パスを直接指定して実行します。
 
 ```bash
+# カレントディレクトリのプロジェクトにインストール（プロジェクトルートで実行）
 bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --local
+
+# 任意のプロジェクトパスを指定してインストール
+bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --local /path/to/your-project
 ```
 
 `.claude/settings.json` にhookが書き込まれます。既存の設定がある場合は自動でバックアップされます。
@@ -161,8 +165,11 @@ bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --global
 元の状態に戻すには `restore.sh` を使用します。
 
 ```bash
-# プロジェクトレベルを復元
+# カレントディレクトリのプロジェクトを復元
 bash /path/to/claude-code-ffxiv-hooks/scripts/restore.sh --local
+
+# パスを指定して復元
+bash /path/to/claude-code-ffxiv-hooks/scripts/restore.sh --local /path/to/your-project
 
 # ユーザーレベルを復元
 bash /path/to/claude-code-ffxiv-hooks/scripts/restore.sh --global
