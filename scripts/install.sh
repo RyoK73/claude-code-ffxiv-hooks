@@ -5,9 +5,9 @@ case "${1:-}" in
   --global|-g)
     TARGET_DIR="$HOME/.claude" ;;
   --local|-l|"")
-    TARGET_DIR="${PWD}/.claude" ;;
+    TARGET_DIR="$(realpath -m "${2:-${PWD}}")/.claude" ;;
   *)
-    echo "Usage: install.sh [--local|-l (default) | --global|-g]"
+    echo "Usage: install.sh [--local|-l [PATH] (default) | --global|-g]"
     exit 1 ;;
 esac
 

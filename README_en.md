@@ -54,10 +54,14 @@ cp /path/to/extracted/*.mp3 sounds/ffxiv_sounds/
 
 ### Project-level install (specific project only)
 
-Run from the root of the project you want to apply hooks to:
+Run from the root of the project you want to apply hooks to, or specify the path directly:
 
 ```bash
+# Install to the current directory's project (run from project root)
 bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --local
+
+# Install to a specific project path
+bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --local /path/to/your-project
 ```
 
 Writes hooks to `.claude/settings.json`. Existing settings are automatically backed up.
@@ -161,8 +165,11 @@ Place any MP3 file in `sounds/third_party/` and set `soundPath` to `"third_party
 To restore a previous state:
 
 ```bash
-# Restore project-level settings
+# Restore the current directory's project settings
 bash /path/to/claude-code-ffxiv-hooks/scripts/restore.sh --local
+
+# Restore a specific project by path
+bash /path/to/claude-code-ffxiv-hooks/scripts/restore.sh --local /path/to/your-project
 
 # Restore user-level settings
 bash /path/to/claude-code-ffxiv-hooks/scripts/restore.sh --global
