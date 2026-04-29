@@ -188,3 +188,6 @@ Please review the [FINAL FANTASY XIV Materials Usage License](http://support.jp.
 ### Third-party sounds
 
 Any sounds placed in `sounds/third_party/` are used at your own responsibility. Always verify the license of any sound you add.
+
+## Credits
+- [Ticking Clock Sound Effect – 1 - MP3 Edition](https://pixabay.com/sound-effects/film-special-effects-ticking-clock-sound-effect-1-mp3-edition-264451/) by [WingsoarStudio](https://pixabay.com/users/wingsoarstudio-47048810/) via [pixabay](https://pixabay.com)
