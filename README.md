@@ -8,15 +8,15 @@ Claude Code のhookイベントに応じて、FINAL FANTASY XIV のサウンド�
 
 Claude Code が各種操作を完了した際に、FFXIVのSEが鳴ります。
 
-| Hook | デフォルトSE | 発生条件 |
-|------|------------|----------|
-| `Stop` | Notification | Claudeが1ターンの応答を完了し、**ユーザーの入力待ち**になったとき。毎ターン必ず発火する |
-| `SubagentStop` | Guildleve Complete | `Agent` ツールで起動した**サブエージェントが完了**したとき |
-| `Notification` | Linkshell Transmission | Claude が通知を送信するとき。ただし**ターミナルにフォーカスがある場合は抑制**される。席を外しているときなど、フォーカスが外れている状態でのみ実際に発火する |
-| `PermissionRequest` | Feature Unlocked | Claudeがツール実行などの**許可をリクエスト**するとき |
-| `PostToolUse` (Bash 成功) | Confirm | Bash ツールの実行が**終了コード 0** で正常終了したとき |
-| `PostToolUse` (Bash 失敗) | Error | Bash ツールの実行が**終了コード 非0** でエラー終了したとき |
-| `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item | ファイルの**編集・作成ツール**が完了したとき。1ターン中に複数ファイルを編集すると複数回発火する |
+| Hook                                 | デフォルトSE           | 発生条件                                                                                                                                                    |
+| ------------------------------------ | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Stop`                               | Notification           | Claudeが1ターンの応答を完了し、**ユーザーの入力待ち**になったとき。毎ターン必ず発火する                                                                     |
+| `SubagentStop`                       | Guildleve Complete     | `Agent` ツールで起動した**サブエージェントが完了**したとき                                                                                                  |
+| `Notification`                       | Linkshell Transmission | Claude が通知を送信するとき。ただし**ターミナルにフォーカスがある場合は抑制**される。席を外しているときなど、フォーカスが外れている状態でのみ実際に発火する |
+| `PermissionRequest`                  | Feature Unlocked       | Claudeがツール実行などの**許可をリクエスト**するとき                                                                                                        |
+| `PostToolUse` (Bash 成功)            | Confirm                | Bash ツールの実行が**終了コード 0** で正常終了したとき                                                                                                      |
+| `PostToolUse` (Bash 失敗)            | Error                  | Bash ツールの実行が**終了コード 非0** でエラー終了したとき                                                                                                  |
+| `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item            | ファイルの**編集・作成ツール**が完了したとき。1ターン中に複数ファイルを編集すると複数回発火する                                                             |
 
 デフォルトでは **Stop・Notification・PermissionRequest が有効**です。`hooks-config.json` で各hookの有効/無効を切り替えられます。
 
@@ -26,10 +26,10 @@ Claude Code が各種操作を完了した際に、FFXIVのSEが鳴ります。
 - `jq`
 - `bash`
 - 以下いずれかのオーディオプレーヤー（優先順）:
-  - `paplay`（推奨）: PipeWire / PulseAudio 環境に同梱
-  - `mpv`: `sudo pacman -S mpv` / `sudo apt install mpv`
-  - `ffplay`: `sudo pacman -S ffmpeg` / `sudo apt install ffmpeg`
-  - `aplay`: ALSA 環境に同梱（音量調整非対応）
+    - `paplay`（推奨）: PipeWire / PulseAudio 環境に同梱
+    - `mpv`: `sudo pacman -S mpv` / `sudo apt install mpv`
+    - `ffplay`: `sudo pacman -S ffmpeg` / `sudo apt install ffmpeg`
+    - `aplay`: ALSA 環境に同梱（音量調整非対応）
 
 ## インストール
 
@@ -64,30 +64,30 @@ bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --global
 
 ```json
 {
-  "player": "auto",
-  "volume": 80,
-  "hooks": [
-    {
-      "name": "Notification",
-      "hookEvent": "Notification",
-      "soundPath": "ffxiv_sounds/FFXIV_Incoming_Tell_1.mp3",
-      "isEnable": true
-    }
-  ]
+    "player": "auto",
+    "volume": 80,
+    "hooks": [
+        {
+            "name": "Notification",
+            "hookEvent": "Notification",
+            "soundPath": "ffxiv_sounds/FFXIV_Incoming_Tell_1.mp3",
+            "isEnable": true
+        }
+    ]
 }
 ```
 
-| フィールド | 説明 |
-|---|---|
-| `player` | `"auto"` / `"paplay"` / `"mpv"` / `"ffplay"` / `"aplay"` |
-| `volume` | 音量（0〜100）。`aplay` は非対応 |
-| `hooks[].name` | hookの識別子 |
-| `hooks[].hookEvent` | 対応するClaude Code hookイベント名 |
-| `hooks[].soundPath` | `sounds/` からの相対パス（単一音源） |
-| `hooks[].soundPaths` | 複数音源を順番に再生するパスの配列。`soundPath` より優先される |
-| `hooks[].isEnable` | `true` で有効、`false` で無効 |
-| `hooks[].matcher` | （PostToolUse専用）ツール名のマッチャーパターン |
-| `hooks[].script` | （PostToolUse専用）カスタムスクリプト名。省略時は `play.sh` を使用 |
+| フィールド           | 説明                                                               |
+| -------------------- | ------------------------------------------------------------------ |
+| `player`             | `"auto"` / `"paplay"` / `"mpv"` / `"ffplay"` / `"aplay"`           |
+| `volume`             | 音量（0〜100）。`aplay` は非対応                                   |
+| `hooks[].name`       | hookの識別子                                                       |
+| `hooks[].hookEvent`  | 対応するClaude Code hookイベント名                                 |
+| `hooks[].soundPath`  | `sounds/` からの相対パス（単一音源）                               |
+| `hooks[].soundPaths` | 複数音源を順番に再生するパスの配列。`soundPath` より優先される     |
+| `hooks[].isEnable`   | `true` で有効、`false` で無効                                      |
+| `hooks[].matcher`    | （PostToolUse専用）ツール名のマッチャーパターン                    |
+| `hooks[].script`     | （PostToolUse専用）カスタムスクリプト名。省略時は `play.sh` を使用 |
 
 ### 複数のSEを順番に再生する
 
@@ -95,13 +95,10 @@ bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --global
 
 ```json
 {
-  "name": "Stop",
-  "hookEvent": "Stop",
-  "soundPaths": [
-    "ffxiv_sounds/FFXIV_Fanfare.mp3",
-    "ffxiv_sounds/FFXIV_Notification.mp3"
-  ],
-  "isEnable": true
+    "name": "Stop",
+    "hookEvent": "Stop",
+    "soundPaths": ["ffxiv_sounds/FFXIV_Fanfare.mp3", "ffxiv_sounds/FFXIV_Notification.mp3"],
+    "isEnable": true
 }
 ```
 
@@ -117,10 +114,10 @@ bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --global
 
 ```json
 {
-  "name": "PreToolUse",
-  "hookEvent": "PreToolUse",
-  "soundPath": "third_party/my_sound.mp3",
-  "isEnable": true
+    "name": "PreToolUse",
+    "hookEvent": "PreToolUse",
+    "soundPath": "third_party/my_sound.mp3",
+    "isEnable": true
 }
 ```
 
@@ -128,11 +125,11 @@ bash /path/to/claude-code-ffxiv-hooks/scripts/install.sh --global
 
 ```json
 {
-  "name": "PostToolUse_Read",
-  "hookEvent": "PostToolUse",
-  "matcher": "Read",
-  "soundPath": "ffxiv_sounds/FFXIV_Confirm.mp3",
-  "isEnable": true
+    "name": "PostToolUse_Read",
+    "hookEvent": "PostToolUse",
+    "matcher": "Read",
+    "soundPath": "ffxiv_sounds/FFXIV_Confirm.mp3",
+    "isEnable": true
 }
 ```
 
@@ -188,6 +185,3 @@ scripts/
 ### サードパーティ製サウンドについて
 
 `sounds/third_party/` に配置するサウンドは各自の責任のもとご利用ください。利用するサウンドのライセンスを必ずご確認ください。
-
-## Credits
-- [Ticking Clock Sound Effect – 1 - MP3 Edition](https://pixabay.com/sound-effects/film-special-effects-ticking-clock-sound-effect-1-mp3-edition-264451/) by [WingsoarStudio](https://pixabay.com/users/wingsoarstudio-47048810/) via [pixabay](https://pixabay.com)

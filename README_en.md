@@ -8,15 +8,15 @@ Plays FINAL FANTASY XIV sound effects in response to Claude Code hook events.
 
 FFXIV SEs play when Claude Code completes various operations.
 
-| Hook | Default SE | Trigger |
-|------|-----------|---------|
-| `Stop` | Notification | Claude completes a turn's response and **waits for user input**. Fires every turn. |
-| `SubagentStop` | Guildleve Complete | A subagent finishes |
-| `Notification` | Linkshell Transmission | When Claude sends a notification. **Suppressed if the terminal has focus** — only fires when focus is away (e.g., you've stepped away from your desk). |
-| `PermissionRequest` | Feature Unlocked | When Claude **requests permission** to perform a tool call or action. |
-| `PostToolUse` (Bash success) | Confirm | Shell command exits with 0 |
-| `PostToolUse` (Bash failure) | Error | Shell command exits non-zero |
-| `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item | When a **file edit/create tool** completes. Fires once per file — multiple edits in one turn trigger it multiple times. |
+| Hook                                 | Default SE             | Trigger                                                                                                                                                |
+| ------------------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `Stop`                               | Notification           | Claude completes a turn's response and **waits for user input**. Fires every turn.                                                                     |
+| `SubagentStop`                       | Guildleve Complete     | A subagent finishes                                                                                                                                    |
+| `Notification`                       | Linkshell Transmission | When Claude sends a notification. **Suppressed if the terminal has focus** — only fires when focus is away (e.g., you've stepped away from your desk). |
+| `PermissionRequest`                  | Feature Unlocked       | When Claude **requests permission** to perform a tool call or action.                                                                                  |
+| `PostToolUse` (Bash success)         | Confirm                | Shell command exits with 0                                                                                                                             |
+| `PostToolUse` (Bash failure)         | Error                  | Shell command exits non-zero                                                                                                                           |
+| `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item            | When a **file edit/create tool** completes. Fires once per file — multiple edits in one turn trigger it multiple times.                                |
 
 By default, **Stop, Notification, and PermissionRequest are enabled**. Toggle hooks in `hooks-config.json`.
 
@@ -26,10 +26,10 @@ By default, **Stop, Notification, and PermissionRequest are enabled**. Toggle ho
 - `jq`
 - `bash`
 - One of the following audio players (checked in order):
-  - `paplay` (recommended): bundled with PipeWire / PulseAudio
-  - `mpv`: `sudo pacman -S mpv` / `sudo apt install mpv`
-  - `ffplay`: `sudo pacman -S ffmpeg` / `sudo apt install ffmpeg`
-  - `aplay`: bundled with ALSA (volume control not supported)
+    - `paplay` (recommended): bundled with PipeWire / PulseAudio
+    - `mpv`: `sudo pacman -S mpv` / `sudo apt install mpv`
+    - `ffplay`: `sudo pacman -S ffmpeg` / `sudo apt install ffmpeg`
+    - `aplay`: bundled with ALSA (volume control not supported)
 
 ## Installation
 
@@ -64,30 +64,30 @@ Edit `hooks-config.json` in the repository root to change SE settings **without 
 
 ```json
 {
-  "player": "auto",
-  "volume": 80,
-  "hooks": [
-    {
-      "name": "Notification",
-      "hookEvent": "Notification",
-      "soundPath": "ffxiv_sounds/FFXIV_Incoming_Tell_1.mp3",
-      "isEnable": true
-    }
-  ]
+    "player": "auto",
+    "volume": 80,
+    "hooks": [
+        {
+            "name": "Notification",
+            "hookEvent": "Notification",
+            "soundPath": "ffxiv_sounds/FFXIV_Incoming_Tell_1.mp3",
+            "isEnable": true
+        }
+    ]
 }
 ```
 
-| Field | Description |
-|---|---|
-| `player` | `"auto"` / `"paplay"` / `"mpv"` / `"ffplay"` / `"aplay"` |
-| `volume` | Volume level (0–100). Not supported by `aplay` |
-| `hooks[].name` | Hook identifier |
-| `hooks[].hookEvent` | Claude Code hook event name this entry maps to |
-| `hooks[].soundPath` | Path relative to `sounds/` (single sound) |
-| `hooks[].soundPaths` | Array of paths to play in sequence. Takes precedence over `soundPath` |
-| `hooks[].isEnable` | `true` to enable, `false` to disable |
-| `hooks[].matcher` | (PostToolUse only) Tool name matcher pattern |
-| `hooks[].script` | (PostToolUse only) Custom script filename. Defaults to `play.sh` if omitted |
+| Field                | Description                                                                 |
+| -------------------- | --------------------------------------------------------------------------- |
+| `player`             | `"auto"` / `"paplay"` / `"mpv"` / `"ffplay"` / `"aplay"`                    |
+| `volume`             | Volume level (0–100). Not supported by `aplay`                              |
+| `hooks[].name`       | Hook identifier                                                             |
+| `hooks[].hookEvent`  | Claude Code hook event name this entry maps to                              |
+| `hooks[].soundPath`  | Path relative to `sounds/` (single sound)                                   |
+| `hooks[].soundPaths` | Array of paths to play in sequence. Takes precedence over `soundPath`       |
+| `hooks[].isEnable`   | `true` to enable, `false` to disable                                        |
+| `hooks[].matcher`    | (PostToolUse only) Tool name matcher pattern                                |
+| `hooks[].script`     | (PostToolUse only) Custom script filename. Defaults to `play.sh` if omitted |
 
 ### Playing multiple sounds in sequence
 
@@ -95,13 +95,10 @@ Use `soundPaths` (array) to play multiple SEs in order for a single hook event.
 
 ```json
 {
-  "name": "Stop",
-  "hookEvent": "Stop",
-  "soundPaths": [
-    "ffxiv_sounds/FFXIV_Fanfare.mp3",
-    "ffxiv_sounds/FFXIV_Notification.mp3"
-  ],
-  "isEnable": true
+    "name": "Stop",
+    "hookEvent": "Stop",
+    "soundPaths": ["ffxiv_sounds/FFXIV_Fanfare.mp3", "ffxiv_sounds/FFXIV_Notification.mp3"],
+    "isEnable": true
 }
 ```
 
@@ -117,10 +114,10 @@ Add an entry to `hooks-config.json` and re-run `install.sh` — the new hook is 
 
 ```json
 {
-  "name": "PreToolUse",
-  "hookEvent": "PreToolUse",
-  "soundPath": "third_party/my_sound.mp3",
-  "isEnable": true
+    "name": "PreToolUse",
+    "hookEvent": "PreToolUse",
+    "soundPath": "third_party/my_sound.mp3",
+    "isEnable": true
 }
 ```
 
@@ -128,11 +125,11 @@ Add an entry to `hooks-config.json` and re-run `install.sh` — the new hook is 
 
 ```json
 {
-  "name": "PostToolUse_Read",
-  "hookEvent": "PostToolUse",
-  "matcher": "Read",
-  "soundPath": "ffxiv_sounds/FFXIV_Confirm.mp3",
-  "isEnable": true
+    "name": "PostToolUse_Read",
+    "hookEvent": "PostToolUse",
+    "matcher": "Read",
+    "soundPath": "ffxiv_sounds/FFXIV_Confirm.mp3",
+    "isEnable": true
 }
 ```
 
@@ -188,6 +185,3 @@ Please review the [FINAL FANTASY XIV Materials Usage License](http://support.jp.
 ### Third-party sounds
 
 Any sounds placed in `sounds/third_party/` are used at your own responsibility. Always verify the license of any sound you add.
-
-## Credits
-- [Ticking Clock Sound Effect – 1 - MP3 Edition](https://pixabay.com/sound-effects/film-special-effects-ticking-clock-sound-effect-1-mp3-edition-264451/) by [WingsoarStudio](https://pixabay.com/users/wingsoarstudio-47048810/) via [pixabay](https://pixabay.com)
