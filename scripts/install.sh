@@ -22,17 +22,53 @@ if [ -f "$TARGET" ]; then
   ls -t "$BACKUP_DIR"/settings.*.json | tail -n +6 | xargs rm -f 2>/dev/null
 fi
 
+CONFIG="$REPO_DIR/hooks-config.json"
+
+if [ ! -f "$CONFIG" ]; then
+  echo "Error: hooks-config.json not found at $CONFIG" >&2
+  exit 1
+fi
+
 NEW_HOOKS=$(jq -n \
   --arg repo "$REPO_DIR" \
-  '{
-    Stop: [{ hooks: [{ type: "command", command: ($repo + "/scripts/play.sh Stop") }] }],
-    SubagentStop: [{ hooks: [{ type: "command", command: ($repo + "/scripts/play.sh SubagentStop") }] }],
-    Notification: [{ hooks: [{ type: "command", command: ($repo + "/scripts/play.sh Notification") }] }],
-    PostToolUse: [
-      { matcher: "Bash", hooks: [{ type: "command", command: ($repo + "/scripts/play_bash_result.sh") }] },
-      { matcher: "Edit|Write|MultiEdit", hooks: [{ type: "command", command: ($repo + "/scripts/play.sh PostToolUse_Edit") }] }
-    ]
-  }')
+  --slurpfile cfg "$CONFIG" \
+  '
+  ($cfg[0].hooks) as $hooks |
+
+  (
+    $hooks
+    | map(select(.hookEvent != "PostToolUse"))
+    | map({
+        key: .hookEvent,
+        value: [{ hooks: [{ type: "command", command: ($repo + "/scripts/play.sh " + .name) }] }]
+      })
+    | from_entries
+  ) as $simple |
+
+  (
+    $hooks
+    | map(select(.hookEvent == "PostToolUse"))
+    | unique_by(.matcher)
+    | map({
+        matcher: .matcher,
+        hooks: [{
+          type: "command",
+          command: (
+            if .script != null
+            then $repo + "/scripts/" + .script
+            else $repo + "/scripts/play.sh " + .name
+            end
+          )
+        }]
+      })
+  ) as $posttooluse |
+
+  $simple
+  + (if ($posttooluse | length) > 0
+     then { PostToolUse: $posttooluse }
+     else {}
+     end)
+  ')
 
 if [ -f "$TARGET" ]; then
   jq --argjson h "$NEW_HOOKS" '.hooks = ((.hooks // {}) + $h)' "$TARGET" > /tmp/claude_merged.json
