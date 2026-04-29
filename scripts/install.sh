@@ -3,9 +3,11 @@ REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 case "${1:-}" in
   --global|-g)
-    TARGET_DIR="$HOME/.claude" ;;
+    TARGET_DIR="$HOME/.claude"
+    COPY_SCRIPTS=false ;;
   --local|-l|"")
-    TARGET_DIR="$(realpath -m "${2:-${PWD}}")/.claude" ;;
+    TARGET_DIR="$(realpath -m "${2:-${PWD}}")/.claude"
+    COPY_SCRIPTS=true ;;
   *)
     echo "Usage: install.sh [--local|-l [PATH] (default) | --global|-g]"
     exit 1 ;;
@@ -29,8 +31,31 @@ if [ ! -f "$CONFIG" ]; then
   exit 1
 fi
 
+# --local: copy scripts into TARGET_DIR so hook commands stay within the
+# project root and are not blocked by Claude Code's path restrictions.
+if [ "$COPY_SCRIPTS" = "true" ]; then
+  sed "s|REPO_DIR=.*|REPO_DIR=\"$REPO_DIR\"|" "$REPO_DIR/scripts/play.sh" > "$TARGET_DIR/play.sh"
+  chmod +x "$TARGET_DIR/play.sh"
+
+  cat > "$TARGET_DIR/play_bash_result.sh" << PLAY_BASH_EOF
+#!/bin/bash
+INPUT=\$(cat)
+EXIT_CODE=\$(printf '%s' "\$INPUT" | jq -r '.tool_response.exit_code // 0')
+
+if [ "\$EXIT_CODE" = "0" ]; then
+  exec "$TARGET_DIR/play.sh" "PostToolUse_Bash_Success"
+else
+  exec "$TARGET_DIR/play.sh" "PostToolUse_Bash_Failure"
+fi
+PLAY_BASH_EOF
+  chmod +x "$TARGET_DIR/play_bash_result.sh"
+  SCRIPT_DIR="$TARGET_DIR"
+else
+  SCRIPT_DIR="$REPO_DIR/scripts"
+fi
+
 NEW_HOOKS=$(jq -n \
-  --arg repo "$REPO_DIR" \
+  --arg scripts "$SCRIPT_DIR" \
   --slurpfile cfg "$CONFIG" \
   '
   ($cfg[0].hooks) as $hooks |
@@ -40,7 +65,7 @@ NEW_HOOKS=$(jq -n \
     | map(select(.hookEvent != "PostToolUse"))
     | map({
         key: .hookEvent,
-        value: [{ hooks: [{ type: "command", command: ($repo + "/scripts/play.sh " + .name) }] }]
+        value: [{ hooks: [{ type: "command", command: ($scripts + "/play.sh " + .name) }] }]
       })
     | from_entries
   ) as $simple |
@@ -55,8 +80,8 @@ NEW_HOOKS=$(jq -n \
           type: "command",
           command: (
             if .script != null
-            then $repo + "/scripts/" + .script
-            else $repo + "/scripts/play.sh " + .name
+            then $scripts + "/" + .script
+            else $scripts + "/play.sh " + .name
             end
           )
         }]
