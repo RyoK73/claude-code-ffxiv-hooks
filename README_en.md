@@ -83,10 +83,31 @@ Edit `hooks-config.json` in the repository root to change SE settings **without 
 | `volume` | Volume level (0–100). Not supported by `aplay` |
 | `hooks[].name` | Hook identifier |
 | `hooks[].hookEvent` | Claude Code hook event name this entry maps to |
-| `hooks[].soundPath` | Path relative to `sounds/` |
+| `hooks[].soundPath` | Path relative to `sounds/` (single sound) |
+| `hooks[].soundPaths` | Array of paths to play in sequence. Takes precedence over `soundPath` |
 | `hooks[].isEnable` | `true` to enable, `false` to disable |
 | `hooks[].matcher` | (PostToolUse only) Tool name matcher pattern |
 | `hooks[].script` | (PostToolUse only) Custom script filename. Defaults to `play.sh` if omitted |
+
+### Playing multiple sounds in sequence
+
+Use `soundPaths` (array) to play multiple SEs in order for a single hook event.
+
+```json
+{
+  "name": "Stop",
+  "hookEvent": "Stop",
+  "soundPaths": [
+    "ffxiv_sounds/FFXIV_Fanfare.mp3",
+    "ffxiv_sounds/FFXIV_Notification.mp3"
+  ],
+  "isEnable": true
+}
+```
+
+- Each sound plays to completion before the next starts (sequential playback)
+- The hook command returns immediately — Claude Code is not blocked
+- If both `soundPath` and `soundPaths` are present, `soundPaths` takes precedence
 
 ### Adding new hooks
 
