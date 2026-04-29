@@ -62,3 +62,4 @@ play_sound() {
     play_sound "$sound" "$RESOLVED_PLAYER"
   done
 ) &
+disown

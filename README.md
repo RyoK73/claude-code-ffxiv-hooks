@@ -10,10 +10,10 @@ Claude Code が各種操作を完了した際に、FFXIVのSEが鳴ります。
 
 | Hook | デフォルトSE | 発生条件 |
 |------|------------|----------|
-| `Stop` | Quest Complete | Claudeが1ターンの応答を完了し、**ユーザーの入力待ち**になったとき。毎ターン必ず発火する |
+| `Stop` | Notification | Claudeが1ターンの応答を完了し、**ユーザーの入力待ち**になったとき。毎ターン必ず発火する |
 | `SubagentStop` | Guildleve Complete | `Agent` ツールで起動した**サブエージェントが完了**したとき |
-| `Notification` | Incoming Tell 1 | Claude が通知を送信するとき。ただし**ターミナルにフォーカスがある場合は抑制**される。席を外しているときなど、フォーカスが外れている状態でのみ実際に発火する |
-| `PermissionRequest` | Quest Complete | Claudeがツール実行などの**許可をリクエスト**するとき |
+| `Notification` | Linkshell Transmission | Claude が通知を送信するとき。ただし**ターミナルにフォーカスがある場合は抑制**される。席を外しているときなど、フォーカスが外れている状態でのみ実際に発火する |
+| `PermissionRequest` | Feature Unlocked | Claudeがツール実行などの**許可をリクエスト**するとき |
 | `PostToolUse` (Bash 成功) | Confirm | Bash ツールの実行が**終了コード 0** で正常終了したとき |
 | `PostToolUse` (Bash 失敗) | Error | Bash ツールの実行が**終了コード 非0** でエラー終了したとき |
 | `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item | ファイルの**編集・作成ツール**が完了したとき。1ターン中に複数ファイルを編集すると複数回発火する |

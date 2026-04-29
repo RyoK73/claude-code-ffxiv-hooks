@@ -10,10 +10,10 @@ FFXIV SEs play when Claude Code completes various operations.
 
 | Hook | Default SE | Trigger |
 |------|-----------|---------|
-| `Stop` | Quest Complete | Claude completes a turn's response and **waits for user input**. Fires every turn. |
+| `Stop` | Notification | Claude completes a turn's response and **waits for user input**. Fires every turn. |
 | `SubagentStop` | Guildleve Complete | A subagent finishes |
-| `Notification` | Incoming Tell 1 | When Claude sends a notification. **Suppressed if the terminal has focus** — only fires when focus is away (e.g., you've stepped away from your desk). |
-| `PermissionRequest` | Quest Complete | When Claude **requests permission** to perform a tool call or action. |
+| `Notification` | Linkshell Transmission | When Claude sends a notification. **Suppressed if the terminal has focus** — only fires when focus is away (e.g., you've stepped away from your desk). |
+| `PermissionRequest` | Feature Unlocked | When Claude **requests permission** to perform a tool call or action. |
 | `PostToolUse` (Bash success) | Confirm | Shell command exits with 0 |
 | `PostToolUse` (Bash failure) | Error | Shell command exits non-zero |
 | `PostToolUse` (Edit/Write/MultiEdit) | Obtain Item | When a **file edit/create tool** completes. Fires once per file — multiple edits in one turn trigger it multiple times. |
