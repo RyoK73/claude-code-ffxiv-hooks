@@ -40,6 +40,18 @@ git clone https://github.com/RyoK73/claude-code-ffxiv-hooks.git
 cd claude-code-ffxiv-hooks
 ```
 
+### FFXIVサウンドの準備
+
+公式ファンキットからスマートフォン向け着信音をダウンロードし、MP3ファイルを `sounds/ffxiv_sounds/` に配置します。
+
+1. [FFXIV スマートフォン向け着信音ファンキット](https://eu.finalfantasyxiv.com/lodestone/special/fankit/smartphone_ringtone/) からZIPをダウンロード
+2. ZIPを展開し、中の `*.mp3` ファイルをすべて `sounds/ffxiv_sounds/` へコピー
+
+```bash
+# 例: ZIPを展開後
+cp /path/to/extracted/*.mp3 sounds/ffxiv_sounds/
+```
+
 ### プロジェクトレベルにインストール（特定プロジェクトのみ）
 
 hookを適用したいプロジェクトのルートで実行します。
@@ -188,6 +200,3 @@ scripts/
 ### サードパーティ製サウンドについて
 
 `sounds/third_party/` に配置するサウンドは各自の責任のもとご利用ください。利用するサウンドのライセンスを必ずご確認ください。
-
-## Credits
-- [Ticking Clock Sound Effect – 1 - MP3 Edition](https://pixabay.com/sound-effects/film-special-effects-ticking-clock-sound-effect-1-mp3-edition-264451/) by [WingsoarStudio](https://pixabay.com/users/wingsoarstudio-47048810/) via [pixabay](https://pixabay.com)
