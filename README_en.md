@@ -38,6 +38,7 @@ Clone the repository:
 ```bash
 git clone https://github.com/RyoK73/claude-code-ffxiv-hooks.git
 cd claude-code-ffxiv-hooks
+rm -rf .git
 ```
 
 ### Preparing FFXIV sounds
