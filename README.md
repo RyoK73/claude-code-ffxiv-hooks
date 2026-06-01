@@ -38,6 +38,7 @@ Claude Code が各種操作を完了した際に、FFXIVのSEが鳴ります。
 ```bash
 git clone https://github.com/RyoK73/claude-code-ffxiv-hooks.git
 cd claude-code-ffxiv-hooks
+rm -rf .git
 ```
 
 ### FFXIVサウンドの準備
